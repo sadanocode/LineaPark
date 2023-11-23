@@ -107,7 +107,7 @@ def deposit(wallet, net):
             tr_mult += 0.2
             logger.cs_logger.info('Еще одна попытка перевода средств на биржу')
         else:
-            txn_tr_hash, txn_status = txnHelper.exec_txn(wallet.key, net, txn_transfer)
+            txn_tr_hash, txn_status = txnHelper.exec_txn(wallet.key, txn_transfer, net)
             if txn_status is False:
                 tr_mult += 0.2
                 logger.cs_logger.info('Еще одна попытка перевода средств на биржу')
