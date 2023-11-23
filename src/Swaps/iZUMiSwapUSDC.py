@@ -43,7 +43,7 @@ def build_txn_swap_in(wallet, value_eth, price):
         usdc_address = tokens.USDC_token.address
         weth_address = tokens.wETH_token.address
 
-        path_str = (weth_address.removeprefix('0x') + '0001f4' + pool_address.removeprefix('0x') + '0001f4' +
+        path_str = (weth_address.removeprefix('0x') + '0001f4' + #pool_address.removeprefix('0x') + '0001f4' +
                     usdc_address.removeprefix('0x'))
         path = bytes.fromhex(path_str)
 
@@ -88,7 +88,7 @@ def build_txn_swap_out(wallet, value_token_wei, price):
         usdc_address = tokens.USDC_token.address
         weth_address = tokens.wETH_token.address
 
-        path_str = (usdc_address.removeprefix('0x') + '0001f4' + pool_address.removeprefix('0x') + '0001f4' +
+        path_str = (usdc_address.removeprefix('0x') + '0001f4' + #pool_address.removeprefix('0x') + '0001f4' +
                     weth_address.removeprefix('0x'))
         path = bytes.fromhex(path_str)
 
