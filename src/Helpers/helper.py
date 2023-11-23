@@ -86,3 +86,9 @@ def trunc_value(value, digs_min, digs_max):
     trunc = math.trunc(value * (10 ** digs))  # Округляем до {digs} знаков после запятой
     value_tr = trunc / (10 ** digs)
     return value_tr
+
+
+def choice_net(networks, net_name):
+    for net in networks:
+        if net.name == net_name:
+            return net

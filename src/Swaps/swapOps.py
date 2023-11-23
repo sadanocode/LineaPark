@@ -13,7 +13,8 @@ def USDC_swaps(wallet):
     logger.cs_logger.info(f'Свапы USDC - транзакций: {txn_count}')
 
     price = helper.get_price('ETH')
-    swap_balance_eth = helper.trunc_value(settings.USDC_volume/price, 4, 6)
+    USDC_volume = random.randint(settings.USDC_volume[0], settings.USDC_volume[1])
+    swap_balance_eth = helper.trunc_value(USDC_volume/price, 4, 6)
     iZUMiUSDC.swapping(wallet, swap_balance_eth, price, txn_count)
 
     value_token_wei = tokens.contract_USDC.functions.balanceOf(wallet.address).call()
@@ -27,7 +28,8 @@ def wstETH_swaps(wallet):
 
     price_wstETH = helper.get_price_wstETH('wstETH')
     price_ETH = helper.get_price('ETH')
-    swap_balance_eth = helper.trunc_value(settings.wstETH_volume / price_ETH, 4, 6)
+    wstETH_volume = random.randint(settings.wstETH_volume[0], settings.wstETH_volume[1])
+    swap_balance_eth = helper.trunc_value(wstETH_volume / price_ETH, 4, 6)
     iZUMi_wstETH.swapping(wallet, swap_balance_eth, price_wstETH, txn_count)
 
     price_wstETH = helper.get_price_wstETH('wstETH')

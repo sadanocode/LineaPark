@@ -14,6 +14,7 @@ class Network(object):
         self.router_address = router_address
         self.chain_okx = chain_okx
 
+networks = list()
 
 linea_net = Network(
     name='Linea',
@@ -47,3 +48,16 @@ arbitrum_net = Network(
     router_address='0x53Bf833A5d6c4ddA888F69c22C88C9f356a41614',
     chain_okx='ETH-Arbitrum One'
 )
+
+optimism_net = Network(
+        name='Optimism',
+        rpc=settings.optimism_rpc,
+        chain_id_l0=111,
+        transfer=[80_000, 150_000],
+        bridge_gas=[700_000, 900_000],
+        router_eth_address='0xB49c4e680174E331CB0A7fF3Ab58afC9738d5F8b',
+        router_address='0xB0D502E938ed5f4df2E681fE6E419ff29631d62b',
+        chain_okx='ETH-Optimism'
+    )
+
+networks.extend([arbitrum_net, optimism_net])  # Сети для Stargate бриджа

@@ -63,13 +63,14 @@ def main():
 
             if settings.switch_bridge_exc == 1:
                 # Делаем бридж в Arbitrum или Optimism
+                net_src = helper.choice_net(nt.networks, random.choice(settings.net_bridge))
                 result = stargateBridge.bridge_eth(wallet, nt.linea_net, net_src, True)
 
                 if result is True:
                     balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
                     nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
                     logger.rewrite_overall(wallet, balance_end, nonce)
-                    # Трансфер средств на адрес биржи в Arbitrum
+                    # Трансфер средств на адрес биржи в Arbitrum или Optimism
                     okxOp.deposit(wallet, net_src)
                     logger.rewrite_overall(wallet, balance_end, nonce)
                 else:

@@ -1,7 +1,6 @@
 import settings
 import time
 import src.logger as logger
-import src.Swaps.tokens as tokens
 import src.Helpers.helper as helper
 import src.ABIs as ABIs
 

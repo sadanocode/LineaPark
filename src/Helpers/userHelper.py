@@ -24,11 +24,10 @@ def get_info(wallets):
     else:
         logger.cs_logger.info(f'Депозит на адрес биржи отключен!')
 
-
     logger.cs_logger.info(f'Количество транзакция для USDC: от {stgs.USDC_txn_count[0]} до {stgs.USDC_txn_count[1]}'
-                          f'    Объем свапов за первый шаг - {stgs.USDC_volume} USD')
+                          f'    Объем свапов за первый шаг: {stgs.USDC_volume[0]} - {stgs.USDC_volume[1]} USD')
     logger.cs_logger.info(f'Количество транзакция для wstETH: от {stgs.wstETH_txn_count[0]} до {stgs.wstETH_txn_count[1]}'
-                          f'    Объем свапов за первый шаг - {stgs.wstETH_volume} USD')
+                          f'    Объем свапов за первый шаг: {stgs.wstETH_volume[0]} - {stgs.wstETH_volume[1]} USD')
 
     logger.cs_logger.info(f'Задержки между кошельками: от {stgs.wallet_delay[0]} до {stgs.wallet_delay[1]} сек')
     logger.cs_logger.info(f'Задержки между свапами: от {stgs.swap_delay[0]} до {stgs.swap_delay[1]} сек')
