@@ -19,10 +19,11 @@ net_src = nt.arbitrum_net
 
 
 def main():
-    op = 1
+    op = 0
     if settings.wallet_mode == 2:
         random.shuffle(wallets)
     for wallet in wallets:
+        op += 1
         balance_st = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
         logger.cs_logger.info(f'')
         logger.cs_logger.info(
