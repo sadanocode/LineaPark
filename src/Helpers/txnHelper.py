@@ -51,7 +51,7 @@ def approve_amount(private_key, address, swap_contract_address, contract, net):
 
 def check_estimate_gas(txn, net):
     try:
-        gas_mult = helper.get_random_value(settings.gas_price_mult[0], settings.gas_price_mult[1], 3)
+        gas_mult = helper.get_random_value(settings.gas_mult[0], settings.gas_mult[1], 3)
         estimate_gas = int(net.web3.eth.estimate_gas(txn) * gas_mult)
         return estimate_gas
     except Exception as ex:

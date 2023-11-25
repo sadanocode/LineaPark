@@ -22,8 +22,8 @@ def build_txn_swap_in(wallet, value_eth, price):
     try:
         contract = contract_swap
         slippage = settings.slippage_USDC
-        gas_mult = helper.get_random_value(settings.gas_mult[0], settings.gas_mult[1], 3)
-        gas_price = int(nt.linea_net.web3.eth.gas_price * gas_mult)
+        gas_price_mult = helper.get_random_value(settings.gas_price_mult[0], settings.gas_price_mult[1], 3)
+        gas_price = int(nt.linea_net.web3.eth.gas_price * gas_price_mult)
 
         value_wei = nt.linea_net.web3.to_wei(value_eth, 'ether')
         token_out_wei = int(float(value_eth) * price * (10 ** 6))
@@ -71,7 +71,8 @@ def build_txn_swap_out(wallet, value_token_wei, price):
         slippage = settings.slippage_USDC
         contract = contract_swap
         nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
-        gas_price = nt.linea_net.web3.eth.gas_price
+        gas_price_mult = helper.get_random_value(settings.gas_price_mult[0], settings.gas_price_mult[1], 3)
+        gas_price = int(nt.linea_net.web3.eth.gas_price * gas_price_mult)
         ether_out = value_token_wei / price / 10 ** 6
         min_output = int(nt.linea_net.web3.to_wei(ether_out * (1 - slippage), 'ether'))
 
