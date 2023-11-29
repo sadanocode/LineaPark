@@ -214,7 +214,7 @@ def repay_borrow_token(wallet, g_token, token, l_contract):
             balance_end_eth = linea_net.web3.from_wei(linea_net.web3.eth.get_balance(wallet.address), 'ether')
 
             eth_price = helper.get_price('ETH')
-            repay_value = token_amount_eth * eth_price
+            repay_value = float(token_amount_eth) * eth_price
 
             wallet.repay_value += repay_value
             log = logger.LogBank(wallet.wallet_num, wallet.address, '---', repay_value, txn_hash,
