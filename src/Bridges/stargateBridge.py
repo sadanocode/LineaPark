@@ -127,6 +127,7 @@ def bridge_eth(wallet, net_src, net_dst, all_balance=False):
                 if txn_status is True:
                     trying = False
                     wallet.bridge_sum += bridge_value_eth
+                    wallet.wallet_num += 1
 
                     balance_end_src = net_src.web3.eth.get_balance(wallet.address)
                     balance_end_src_eth = net_src.web3.from_wei(balance_end_src, 'ether')

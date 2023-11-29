@@ -8,6 +8,26 @@ import src.ABIs as ABIs
 Gas_oracle_address = '0x420000000000000000000000000000000000000F'
 
 
+def get_txn_dict(address, network, value=0):
+    gas_price = get_gas_price(network)
+    nonce = network.web3.eth.get_transaction_count(address)
+    dict_transaction = {
+        'chainId': network.chain_id,
+        'from': address,
+        'value': value,
+        'gas': 650000,
+        'gasPrice': gas_price,
+        'nonce': nonce,
+    }
+    return dict_transaction
+
+
+def get_gas_price(network):
+    gas_price_mult = helper.get_random_value(settings.gas_price_mult[0], settings.gas_price_mult[1], 3)
+    gas_price = int(network.web3.eth.gas_price * gas_price_mult)
+    return gas_price
+
+
 def check_tx_status(txn_hash, net, sec=3):
     status = None
     while status is None:
@@ -17,14 +37,12 @@ def check_tx_status(txn_hash, net, sec=3):
     return status
 
 
-def approve_amount(private_key, address, swap_contract_address, contract, net):
+def approve_amount(private_key, address, spender_address, contract, net, approve_sum=2 ** 256 - 1):
     try:
-        #contract = tokens.contract_USDC
-        allowance = contract.functions.allowance(address, swap_contract_address).call()
-        if allowance <= 10000 * 10 ** 6:
+        allowance = contract.functions.allowance(address, spender_address).call()
+        if allowance <= 0:
             logger.cs_logger.info(f'Даем разрешение смартконтракту использовать токен')
-            approve_sum = 2 ** 256 - 1
-            #approve_sum = 0
+
             nonce = net.web3.eth.get_transaction_count(address)
             gas_price = net.web3.eth.gas_price
 
@@ -36,7 +54,7 @@ def approve_amount(private_key, address, swap_contract_address, contract, net):
                 'nonce': nonce,
             }
             txn_approve = contract.functions.approve(
-                swap_contract_address,
+                spender_address,
                 approve_sum
             ).build_transaction(dict_transaction_approve)
 

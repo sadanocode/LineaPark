@@ -1,7 +1,6 @@
 import src.Helpers.helper as helper
 import src.networks as nt
 import settings
-import src.Swaps.swapOps as swapOps
 import random
 import src.logger as logger
 import src.Exchanges.okxOperations as okxOp
@@ -9,12 +8,13 @@ import src.Helpers.gasPriceChecker as gPC
 import src.Helpers.userHelper as userHelper
 from threading import Thread
 import src.Bridges.stargateBridge as stargateBridge
+from src.Swaps.swapOps import wstETH_swaps, wstETH_sell
+from src.Bank.bankTxns import bank_eth_wsteth
 
 
 logger.create_xml()
 settings.last_row = logger.get_last_row_overall()
 wallets = helper.read_wallets()
-
 net_src = nt.arbitrum_net
 
 
@@ -41,10 +41,16 @@ def main():
             nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
             logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
 
+        # Операции
+        if settings.wstETH_switch == 1:
+            gPC.check_limit()
+            wstETH_swaps(wallet)
 
-        # Свапы
-        gPC.check_limit()
-        swapOps.swaps(wallet)
+            gPC.check_limit()
+            bank_eth_wsteth(wallet)
+
+            gPC.check_limit()
+            wstETH_sell(wallet)
 
         balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
         nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
@@ -76,6 +82,8 @@ def main():
                     logger.rewrite_overall(wallet, balance_end, nonce)
                 else:
                     logger.cs_logger.info(f'Бридж не удался')
+
+        helper.delay_sleep(settings.wallet_delay[0], settings.wallet_delay[1])
 
 
 #'''

@@ -57,9 +57,6 @@ def build_txn_swap_in(wallet, value_eth, price):
             [txn_code, ref]
         ).build_transaction(dict_transaction)
 
-        price_ETH = helper.get_price('ETH')
-        wallet.wstETH_value += float(nt.linea_net.web3.from_wei(min_output, 'ether')) * price * price_ETH
-
         return txn_swap
     except Exception as ex:
         logger.cs_logger.info(f'Ошибка в (iZUMiSwap_wstETH: build_txn_swap_in) {ex.args}')
@@ -105,9 +102,6 @@ def build_txn_swap_out(wallet, value_token_wei, price):
             [txn_code, ref]
         ).build_transaction(dict_transaction)
 
-        price_ETH = helper.get_price('ETH')
-        wallet.wstETH_value += float(nt.linea_net.web3.from_wei(min_output, 'ether')) * price_ETH
-
         return txn_swap
     except Exception as ex:
         logger.cs_logger.info(f'Ошибка в (iZUMiSwap_wstETH: build_txn_swap_out) {ex.args}')
@@ -132,7 +126,7 @@ def swap_ETH_to_wstETH(wallet, swap_value_eth, price, txn_num):
             txn_swap['gas'] = estimate_gas
             txn_hash, txn_status = txnHelper.exec_txn(key, txn_swap, nt.linea_net)
             logger.cs_logger.info(f'Hash: {txn_hash}')
-            helper.delay_sleep(settings.swap_delay[0], settings.swap_delay[1])
+            helper.delay_sleep(settings.txn_delay[0], settings.txn_delay[1])
 
             balance_end_eth = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(address), 'ether')
             balance_end_token = nt.linea_net.web3.from_wei(tokens.contract_wstETH.functions.balanceOf(address).call(), 'ether')
@@ -166,7 +160,7 @@ def swap_wstETH_to_ETH(wallet, value_token_wei, price, txn_num):
                 txn_swap['gas'] = estimate_gas
                 txn_hash, txn_status = txnHelper.exec_txn(key, txn_swap, nt.linea_net)
                 logger.cs_logger.info(f'Hash: {txn_hash}')
-                helper.delay_sleep(settings.swap_delay[0], settings.swap_delay[1])
+                helper.delay_sleep(settings.txn_delay[0], settings.txn_delay[1])
 
                 balance_end_eth = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(address), 'ether')
                 balance_end_token = nt.linea_net.web3.from_wei(tokens.contract_wstETH.functions.balanceOf(address).call(), 'ether')

@@ -21,14 +21,14 @@ def create_xml():
         worksheet.cell(row=1, column=2).value = "Адрес кошелька"
         worksheet.cell(row=1, column=3).value = "Адрес биржи"
         worksheet.cell(row=1, column=4).value = "Сумма бриджа"
-        worksheet.cell(row=1, column=5).value = "Баланс до Linea"
-        worksheet.cell(row=1, column=6).value = "Баланс после Linea"
+        worksheet.cell(row=1, column=5).value = "Нач. бал Linea"
+        worksheet.cell(row=1, column=6).value = "Кон. бал Linea"
         worksheet.cell(row=1, column=7).value = "Кол-во транз в скрипте"
         worksheet.cell(row=1, column=8).value = "Кол-во транз кошелька"
         worksheet.cell(row=1, column=9).value = "Нач. баланс биржи"
         worksheet.cell(row=1, column=10).value = "Кон. баланс биржи"
-        worksheet.cell(row=1, column=11).value = "Объем USDC"
-        worksheet.cell(row=1, column=12).value = "Объем wstETH"
+        worksheet.cell(row=1, column=11).value = "Сумма займа $"
+        worksheet.cell(row=1, column=12).value = "Сумма погашения $"
         worksheet.cell(row=1, column=13).value = "Время"
         workbook.save(log_file)
 
@@ -42,8 +42,8 @@ def create_xml():
         worksheet.cell(row=1, column=7).value = "Hash свапа"
         worksheet.cell(row=1, column=8).value = "Нач. баланс ETH"
         worksheet.cell(row=1, column=9).value = "Кон. баланс ETH"
-        worksheet.cell(row=1, column=10).value = "Нач. баланс токена"
-        worksheet.cell(row=1, column=11).value = "Кон. баланс токена"
+        worksheet.cell(row=1, column=10).value = "Нач. бал токена"
+        worksheet.cell(row=1, column=11).value = "Кон. бал токена"
         worksheet.cell(row=1, column=12).value = "Время"
         workbook.save(log_file)
 
@@ -62,6 +62,58 @@ def create_xml():
         workbook.save(log_file)
         workbook.close()
 
+        worksheet = workbook.create_sheet('Bank transactions')
+        worksheet.cell(row=1, column=1).value = "№ кошелька"
+        worksheet.cell(row=1, column=2).value = "Адрес"
+        worksheet.cell(row=1, column=3).value = f"Сумма займа $"
+        worksheet.cell(row=1, column=4).value = f"Сумма погашения $"
+        worksheet.cell(row=1, column=5).value = f"Hash"
+        worksheet.cell(row=1, column=6).value = f"Нач. баланс исх. сети"
+        worksheet.cell(row=1, column=7).value = f"Кон. баланс исх. сети"
+        worksheet.cell(row=1, column=8).value = "Время"
+        workbook.save(log_file)
+        workbook.close()
+
+
+class LogBank(object):
+    def __init__(self, index, address, borrow_value, repay_value, txn_hash,
+                 balance_st, balance_end):
+        self.address = address
+        self.borrow_value = borrow_value
+        self.repay_value = repay_value
+        self.txn_hash = txn_hash
+        self.balance_st = balance_st
+        self.balance_end = balance_end
+        self.index = index
+
+    def write_log(self, script_time):
+        while True:
+            try:
+                log_file = settings.log_file
+                workbook = openpyxl.load_workbook(log_file)
+                worksheet = workbook['Bank transactions']
+                last_row = worksheet.max_row
+                worksheet.cell(row=last_row + 1, column=1).value = self.index
+                worksheet.cell(row=last_row + 1, column=2).value = self.address
+                worksheet.cell(row=last_row + 1, column=3).value = self.borrow_value
+                worksheet.cell(row=last_row + 1, column=3).number_format = '0.00'
+
+                worksheet.cell(row=last_row + 1, column=4).value = self.repay_value
+                worksheet.cell(row=last_row + 1, column=4).number_format = '0.00'
+
+                worksheet.cell(row=last_row + 1, column=5).value = self.txn_hash
+                worksheet.cell(row=last_row + 1, column=6).value = self.balance_st
+                worksheet.cell(row=last_row + 1, column=6).number_format = '0.00000'
+                worksheet.cell(row=last_row + 1, column=7).value = self.balance_end
+                worksheet.cell(row=last_row + 1, column=7).number_format = '0.00000'
+                worksheet.cell(row=last_row + 1, column=8).value = script_time
+                workbook.save(log_file)
+                workbook.close()
+                break
+            except PermissionError:
+                cs_logger.info(f'Не получается сохранить файл! Закройте Excel. Нажмите Enter для продолжения...')
+                input("")
+
 
 def get_last_row_overall():
     log_file = settings.log_file
@@ -77,7 +129,7 @@ def write_overall(wallet, balance_st, balance_end, script_time, nonce):
             workbook = openpyxl.load_workbook(settings.log_file)
             worksheet = workbook['Overall']
             last_row = settings.last_row
-            worksheet.cell(row=last_row + wallet.index, column=1).value = f'{wallet.wallet_num}'
+            worksheet.cell(row=last_row + wallet.index, column=1).value = wallet.wallet_num
             worksheet.cell(row=last_row + wallet.index, column=2).value = wallet.address
             worksheet.cell(row=last_row + wallet.index, column=3).value = wallet.exchange_address
 
@@ -96,11 +148,11 @@ def write_overall(wallet, balance_st, balance_end, script_time, nonce):
             worksheet.cell(row=last_row + wallet.index, column=10).value = wallet.exc_bal_end
             worksheet.cell(row=last_row + wallet.index, column=10).number_format = '0.00000'
 
-            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.USDC_value
-            worksheet.cell(row=last_row + wallet.index, column=11).number_format = '0.00000'
+            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.borrow_value
+            worksheet.cell(row=last_row + wallet.index, column=11).number_format = '0.00'
 
-            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.wstETH_value
-            worksheet.cell(row=last_row + wallet.index, column=12).number_format = '0.00000'
+            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.repay_value
+            worksheet.cell(row=last_row + wallet.index, column=12).number_format = '0.00'
             worksheet.cell(row=last_row + wallet.index, column=13).value = script_time
             workbook.save(settings.log_file)
             workbook.close()
@@ -122,8 +174,8 @@ def rewrite_overall(wallet, balance_end, nonce):
             worksheet.cell(row=last_row + wallet.index, column=8).value = nonce
             worksheet.cell(row=last_row + wallet.index, column=9).value = wallet.exc_bal_st
             worksheet.cell(row=last_row + wallet.index, column=10).value = wallet.exc_bal_end
-            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.USDC_value
-            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.wstETH_value
+            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.borrow_value
+            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.repay_value
             workbook.save(settings.log_file)
             workbook.close()
             break

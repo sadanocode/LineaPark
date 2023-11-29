@@ -14,6 +14,7 @@ class Network(object):
         self.router_address = router_address
         self.chain_okx = chain_okx
 
+
 networks = list()
 
 linea_net = Network(
