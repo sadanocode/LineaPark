@@ -13,6 +13,11 @@ contract = linea_net.web3.eth.contract(linea_net.web3.to_checksum_address(bank_c
                                        abi=Bank_ABI)
 
 
+def get_enter_info(g_token, address):
+    info = contract.functions.usersOfMarket(g_token.address, address).call()
+    return info
+
+
 def get_borrow_balance(address, l_contract):
     borrow_balance = l_contract.functions.borrowBalanceOf(address).call()
     return borrow_balance
@@ -24,11 +29,13 @@ def get_account_liq(address):
 
 
 def approve_usdc(wallet, token_amount):
-    approve_amount(wallet.key, wallet.address, gTokens.lUSDC_token.address, tokens.contract_USDC, linea_net, token_amount)
+    approve_amount(wallet.key, wallet.address, gTokens.lUSDC_token.address, tokens.contract_USDC,
+                   linea_net, token_amount, token_amount)
 
 
 def approve_wsteth(wallet, token_amount):
-    approve_amount(wallet.key, wallet.address, gTokens.lwstETH_token.address, tokens.contract_wstETH, linea_net, token_amount)
+    approve_amount(wallet.key, wallet.address, gTokens.lwstETH_token.address, tokens.contract_wstETH,
+                   linea_net, token_amount, token_amount)
     wallet.txn_num += 1
 
 
@@ -149,8 +156,11 @@ def borrow_eth(wallet):
     try:
         script_time = helper.get_curr_time()
         balance_start_eth = linea_net.web3.from_wei(linea_net.web3.eth.get_balance(wallet.address), 'ether')
-
-        liq_usd = linea_net.web3.from_wei(get_account_liq(wallet.address), 'ether')
+        liq_bal = get_account_liq(wallet.address)
+        if liq_bal == 0:
+            logger.cs_logger.info(f'Доступная сумма займа равна 0')
+            return False
+        liq_usd = linea_net.web3.from_wei(liq_bal, 'ether')
         eth_price = helper.get_price('ETH')
         token_mult = helper.get_random_value(settings.borrow_mult[0], settings.borrow_mult[1], 3)
         token_amount_eth = helper.trunc_value((float(liq_usd) / eth_price) * token_mult,
@@ -193,8 +203,11 @@ def repay_borrow_token(wallet, g_token, token, l_contract):
     try:
         script_time = helper.get_curr_time()
         balance_start_eth = linea_net.web3.from_wei(linea_net.web3.eth.get_balance(wallet.address), 'ether')
-
-        token_amount = int(get_borrow_balance(wallet.address, l_contract) * 1.01)
+        token_balance = get_borrow_balance(wallet.address, l_contract)
+        if token_balance == 0:
+            logger.cs_logger.info(f'Нечего погашать!')
+            return False
+        token_amount = int(token_balance * 1.01)
         token_amount_eth = linea_net.web3.from_wei(token_amount, 'ether')
         logger.cs_logger.info(f'#   Делаем repayBorrow {token_amount_eth} {token}')
 
@@ -232,7 +245,9 @@ def redeem_wsteth(wallet):
     try:
         logger.cs_logger.info(f'#   Делаем redeemToken wstETH')
         token_amount = gTokens.contract_lwstETH.functions.balanceOf(wallet.address).call()
-
+        if token_amount == 0:
+            logger.cs_logger.info(f'Нечего выводить!')
+            return False
         txn = build_txn_redeem_token(wallet, gTokens.lwstETH_token, token_amount)
         estimate_gas = check_estimate_gas(txn, linea_net)
 
@@ -254,7 +269,9 @@ def redeem_wsteth(wallet):
 
 
 def bank_eth_wsteth(wallet):
-    enter_markets(wallet, gTokens.lwstETH_token)
+    enter_info = get_enter_info(gTokens.lwstETH_token, wallet.address)
+    if enter_info is False:
+        enter_markets(wallet, gTokens.lwstETH_token)
 
     token_approve = tokens.contract_wstETH.functions.balanceOf(wallet.address).call()
     approve_wsteth(wallet, token_approve)

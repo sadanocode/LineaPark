@@ -150,7 +150,8 @@ def swap_wstETH_to_ETH(wallet, value_token_wei, price, txn_num):
             balance_start_eth = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(address), 'ether')
             balance_start_token = nt.linea_net.web3.from_wei(tokens.contract_wstETH.functions.balanceOf(address).call(), 'ether')
 
-            txnHelper.approve_amount(key, address, swap_contract_address, tokens.contract_wstETH, nt.linea_net)
+            txnHelper.approve_amount(key, address, swap_contract_address, tokens.contract_wstETH,
+                                     nt.linea_net, value_token_wei)
             txn_swap = build_txn_swap_out(wallet, value_token_wei, price)
             estimate_gas = txnHelper.check_estimate_gas(txn_swap, nt.linea_net)
             if type(estimate_gas) is str:
