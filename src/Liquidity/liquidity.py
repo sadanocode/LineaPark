@@ -266,29 +266,29 @@ def liq_ops(wallet):
     if settings.liq_withdraw_switch == 0:
         wit_status = True
 
-    slippage = settings.liq_slippage
+    slippage_dep = settings.deposit_slippage
     attempt = 0
     while dep_status is False:
-        dep_status = liq_deposit(wallet, amount_eth, slippage)
+        dep_status = liq_deposit(wallet, amount_eth, slippage_dep)
         if dep_status is False:
             delay_sleep(settings.try_delay[0], settings.try_delay[1])
             attempt += 1
             logger.cs_logger.info(f'Делаем доп попытку № {attempt}')
-            if attempt % 2 == 0 and slippage < settings.liq_slippage_max:
-                slippage += 0.005
+            if attempt % 2 == 0 and slippage_dep < settings.deposit_slippage_max:
+                slippage_dep += 0.005
 
     if dep_status is True:
         attempt = 0
-        slippage = settings.liq_slippage
+        slippage_wth = settings.withdraw_slippage
         while wit_status is False:
             token_amount = get_token_balance(wallet.address) #- 1000
             if token_amount <= 1000:
                 logger.cs_logger.info(f'Баланс ликвидности слишком мал для вывода: {token_amount / 10 ** 6} USDT')
                 break
-            wit_status = liq_withdraw(wallet, token_amount, slippage)
+            wit_status = liq_withdraw(wallet, token_amount, slippage_wth)
             if wit_status is False:
                 delay_sleep(settings.try_delay[0], settings.try_delay[1])
                 attempt += 1
                 logger.cs_logger.info(f'Делаем доп попытку № {attempt}')
-                if attempt % 2 == 0 and slippage < settings.liq_slippage_max:
-                    slippage += 0.005
+                if attempt % 2 == 0 and slippage_wth < settings.withdraw_slippage_max:
+                    slippage_wth += 0.005
