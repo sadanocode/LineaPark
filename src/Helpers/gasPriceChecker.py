@@ -13,7 +13,7 @@ def check_gas_price_ether():
 def checking():
     while settings.stop_flag is False:
         check_gas_price_ether()
-        time.sleep(60 * 1)
+        time.sleep(15 * 1)
 
 
 def check_limit():
@@ -30,4 +30,4 @@ def check_limit():
 
 
 def wait_anim(symbol, gas_price):
-    print(f'\rЖдем, цена газа большая: {gas_price}  {symbol} ', end='')
+    print(f'\rЖдем, цена газа большая: {int(gas_price)} gWei  {symbol} ', end='')

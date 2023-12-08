@@ -8,7 +8,7 @@ class Wallet(object):
         self.exchange_address = exchange_address
         self.txn_num = 0
         self.bridge_sum = 0
-        self.borrow_value = 0
-        self.repay_value = 0
         self.exc_bal_st = 0
         self.exc_bal_end = 0
+        self.deposit_value = 0
+        self.withdraw_value = 0

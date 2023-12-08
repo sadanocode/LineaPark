@@ -15,26 +15,14 @@ def get_curr_time():
 
 
 def get_price(token_name):
-    url = f'https://min-api.cryptocompare.com/data/price?fsym={token_name}&tsyms=USD&api_key=c8a5e2ad37b494efbbd89af2f4edb232353d228e93406615a36b273c0fccd4f2'
+    url = f'https://min-api.cryptocompare.com/data/price?fsym={token_name}&tsyms=USDT&api_key=c8a5e2ad37b494efbbd89af2f4edb232353d228e93406615a36b273c0fccd4f2'
     response = requests.get(url)
     try:
         result = [response.json()]
-        price = result[0]['USD']
+        price = result[0]['USDT']
     except Exception as error:
         logger.cs_logger.info(f'{error.args}')
-        price = 2000
-    return price
-
-
-def get_price_wstETH(token_name):
-    url = f'https://min-api.cryptocompare.com/data/price?fsym={token_name}&tsyms=ETH&api_key=c8a5e2ad37b494efbbd89af2f4edb232353d228e93406615a36b273c0fccd4f2'
-    response = requests.get(url)
-    try:
-        result = [response.json()]
-        price = result[0]['ETH']
-    except Exception as error:
-        logger.cs_logger.info(f'{error.args}')
-        price = 2270
+        price = 2370
     return price
 
 

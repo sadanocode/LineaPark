@@ -27,24 +27,9 @@ def create_xml():
         worksheet.cell(row=1, column=8).value = "Кол-во транз кошелька"
         worksheet.cell(row=1, column=9).value = "Нач. баланс биржи"
         worksheet.cell(row=1, column=10).value = "Кон. баланс биржи"
-        worksheet.cell(row=1, column=11).value = "Сумма займа $"
-        worksheet.cell(row=1, column=12).value = "Сумма погашения $"
+        worksheet.cell(row=1, column=11).value = "Сумма депозита $"
+        worksheet.cell(row=1, column=12).value = "Сумма вывода $"
         worksheet.cell(row=1, column=13).value = "Время"
-        workbook.save(log_file)
-
-        worksheet = workbook.create_sheet('Swap transactions')
-        worksheet.cell(row=1, column=1).value = "№ кошелька"
-        worksheet.cell(row=1, column=2).value = "№ транзакции"
-        worksheet.cell(row=1, column=3).value = "Адрес кошелька"
-        worksheet.cell(row=1, column=4).value = "Свап"
-        worksheet.cell(row=1, column=5).value = "Сумма свапа ETH"
-        worksheet.cell(row=1, column=6).value = "Сумма свапа токена"
-        worksheet.cell(row=1, column=7).value = "Hash свапа"
-        worksheet.cell(row=1, column=8).value = "Нач. баланс ETH"
-        worksheet.cell(row=1, column=9).value = "Кон. баланс ETH"
-        worksheet.cell(row=1, column=10).value = "Нач. бал токена"
-        worksheet.cell(row=1, column=11).value = "Кон. бал токена"
-        worksheet.cell(row=1, column=12).value = "Время"
         workbook.save(log_file)
 
         worksheet = workbook.create_sheet('Bridge transactions')
@@ -62,25 +47,25 @@ def create_xml():
         workbook.save(log_file)
         workbook.close()
 
-        worksheet = workbook.create_sheet('Bank transactions')
+        worksheet = workbook.create_sheet('Liquidity transactions')
         worksheet.cell(row=1, column=1).value = "№ кошелька"
         worksheet.cell(row=1, column=2).value = "Адрес"
-        worksheet.cell(row=1, column=3).value = f"Сумма займа $"
-        worksheet.cell(row=1, column=4).value = f"Сумма погашения $"
+        worksheet.cell(row=1, column=3).value = f"Депозит ETH"
+        worksheet.cell(row=1, column=4).value = f"Вывод ETH"
         worksheet.cell(row=1, column=5).value = f"Hash"
-        worksheet.cell(row=1, column=6).value = f"Нач. баланс исх. сети"
-        worksheet.cell(row=1, column=7).value = f"Кон. баланс исх. сети"
+        worksheet.cell(row=1, column=6).value = f"Нач. баланс ETH"
+        worksheet.cell(row=1, column=7).value = f"Кон. баланс ETH"
         worksheet.cell(row=1, column=8).value = "Время"
         workbook.save(log_file)
         workbook.close()
 
 
-class LogBank(object):
-    def __init__(self, index, address, borrow_value, repay_value, txn_hash,
+class LogLiq(object):
+    def __init__(self, index, address, deposit_value, withdraw_value, txn_hash,
                  balance_st, balance_end):
         self.address = address
-        self.borrow_value = borrow_value
-        self.repay_value = repay_value
+        self.deposit_value = deposit_value
+        self.withdraw_value = withdraw_value
         self.txn_hash = txn_hash
         self.balance_st = balance_st
         self.balance_end = balance_end
@@ -91,16 +76,14 @@ class LogBank(object):
             try:
                 log_file = settings.log_file
                 workbook = openpyxl.load_workbook(log_file)
-                worksheet = workbook['Bank transactions']
+                worksheet = workbook['Liquidity transactions']
                 last_row = worksheet.max_row
                 worksheet.cell(row=last_row + 1, column=1).value = self.index
                 worksheet.cell(row=last_row + 1, column=2).value = self.address
-                worksheet.cell(row=last_row + 1, column=3).value = self.borrow_value
-                worksheet.cell(row=last_row + 1, column=3).number_format = '0.00'
-
-                worksheet.cell(row=last_row + 1, column=4).value = self.repay_value
-                worksheet.cell(row=last_row + 1, column=4).number_format = '0.00'
-
+                worksheet.cell(row=last_row + 1, column=3).value = self.deposit_value
+                worksheet.cell(row=last_row + 1, column=3).number_format = '0.00000'
+                worksheet.cell(row=last_row + 1, column=4).value = self.withdraw_value
+                worksheet.cell(row=last_row + 1, column=4).number_format = '0.00000'
                 worksheet.cell(row=last_row + 1, column=5).value = self.txn_hash
                 worksheet.cell(row=last_row + 1, column=6).value = self.balance_st
                 worksheet.cell(row=last_row + 1, column=6).number_format = '0.00000'
@@ -148,10 +131,10 @@ def write_overall(wallet, balance_st, balance_end, script_time, nonce):
             worksheet.cell(row=last_row + wallet.index, column=10).value = wallet.exc_bal_end
             worksheet.cell(row=last_row + wallet.index, column=10).number_format = '0.00000'
 
-            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.borrow_value
+            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.deposit_value
             worksheet.cell(row=last_row + wallet.index, column=11).number_format = '0.00'
 
-            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.repay_value
+            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.withdraw_value
             worksheet.cell(row=last_row + wallet.index, column=12).number_format = '0.00'
             worksheet.cell(row=last_row + wallet.index, column=13).value = script_time
             workbook.save(settings.log_file)
@@ -174,8 +157,8 @@ def rewrite_overall(wallet, balance_end, nonce):
             worksheet.cell(row=last_row + wallet.index, column=8).value = nonce
             worksheet.cell(row=last_row + wallet.index, column=9).value = wallet.exc_bal_st
             worksheet.cell(row=last_row + wallet.index, column=10).value = wallet.exc_bal_end
-            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.borrow_value
-            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.repay_value
+            worksheet.cell(row=last_row + wallet.index, column=11).value = wallet.deposit_value
+            worksheet.cell(row=last_row + wallet.index, column=12).value = wallet.withdraw_value
             workbook.save(settings.log_file)
             workbook.close()
             break
@@ -237,59 +220,6 @@ class LogBridge(object):
                 last_row = worksheet.max_row
                 worksheet.cell(row=last_row, column=7).value = self.balance_from_end
                 worksheet.cell(row=last_row, column=10).value = self.balance_to_end
-                workbook.save(log_file)
-                workbook.close()
-                break
-            except PermissionError:
-                cs_logger.info(f'Не получается сохранить файл! Закройте Excel. Нажмите Enter для продолжения...')
-                input("")
-
-
-class LogSwap(object):
-    def __init__(self, wallet_num, txn_num, address, swapper, swap_value, hash_txn, balance_start_eth,
-                 balance_end_eth, balance_start_token, balance_end_token):
-        self.wallet_num = wallet_num
-        self.txn_num = txn_num
-        self.address = address
-        self.swapper = swapper
-        self.swap_value = swap_value
-        self.hash_txn = hash_txn
-        self.balance_start_eth = balance_start_eth
-        self.balance_end_eth = balance_end_eth
-        self.balance_start_token = balance_start_token
-        self.balance_end_token = balance_end_token
-
-    def write_log(self, token, script_time):
-        while True:
-            try:
-                log_file = settings.log_file
-                workbook = openpyxl.load_workbook(log_file)
-                worksheet = workbook['Swap transactions']
-                last_row = worksheet.max_row
-                worksheet.cell(row=last_row + 1, column=1).value = self.wallet_num
-                worksheet.cell(row=last_row + 1, column=2).value = self.txn_num
-                worksheet.cell(row=last_row + 1, column=3).value = f'{self.address}'
-                worksheet.cell(row=last_row + 1, column=4).value = f'{self.swapper}'
-
-                if token == 1:
-                    worksheet.cell(row=last_row + 1, column=5).value = self.swap_value
-                    worksheet.cell(row=last_row + 1, column=5).number_format = '0.00000'
-                    worksheet.cell(row=last_row + 1, column=6).value = ''
-                if token == 2:
-                    worksheet.cell(row=last_row + 1, column=5).value = ''
-                    worksheet.cell(row=last_row + 1, column=6).value = self.swap_value
-                    worksheet.cell(row=last_row + 1, column=6).number_format = '0.00000'
-
-                worksheet.cell(row=last_row + 1, column=7).value = f'{self.hash_txn}'
-                worksheet.cell(row=last_row + 1, column=8).value = self.balance_start_eth
-                worksheet.cell(row=last_row + 1, column=8).number_format = '0.00000'
-                worksheet.cell(row=last_row + 1, column=9).value = self.balance_end_eth
-                worksheet.cell(row=last_row + 1, column=9).number_format = '0.00000'
-                worksheet.cell(row=last_row + 1, column=10).value = self.balance_start_token
-                worksheet.cell(row=last_row + 1, column=10).number_format = '0.00000'
-                worksheet.cell(row=last_row + 1, column=11).value = self.balance_end_token
-                worksheet.cell(row=last_row + 1, column=11).number_format = '0.00000'
-                worksheet.cell(row=last_row + 1, column=12).value = f'{script_time}'
                 workbook.save(log_file)
                 workbook.close()
                 break

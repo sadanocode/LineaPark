@@ -5,11 +5,10 @@ import random
 import src.logger as logger
 import src.Exchanges.okxOperations as okxOp
 import src.Helpers.gasPriceChecker as gPC
+from src.Liquidity.liquidity import liq_ops
 import src.Helpers.userHelper as userHelper
 from threading import Thread
 import src.Bridges.stargateBridge as stargateBridge
-from src.Swaps.swapOps import wstETH_swaps, wstETH_sell
-from src.Bank.bankTxns import bank_eth_wsteth
 
 
 logger.create_xml()
@@ -37,27 +36,17 @@ def main():
                 logger.cs_logger.info(f'{res}')
                 break
 
-            balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
-            nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
-            logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
+        balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
+        nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
+        logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
 
         # Операции
-        if settings.wstETH_switch == 1:
-            gPC.check_limit()
-            wstETH_swaps(wallet)
-
-            gPC.check_limit()
-            bank_eth_wsteth(wallet)
-
-            gPC.check_limit()
-            wstETH_sell(wallet)
+        #gPC.check_limit()
+        liq_ops(wallet)
 
         balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
         nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
-        if settings.exc_withdraw == 0:
-            logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
-        else:
-            logger.rewrite_overall(wallet, balance_end, nonce)
+        logger.rewrite_overall(wallet, balance_end, nonce)
 
         # Депозит на биржу или бридж
         if settings.exc_deposit == 1:
