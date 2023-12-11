@@ -10,5 +10,5 @@ class Wallet(object):
         self.bridge_sum = 0
         self.exc_bal_st = 0
         self.exc_bal_end = 0
-        self.deposit_value = 0
-        self.withdraw_value = 0
+        self.fwdx_value = 0
+        self.zkdx_value = 0

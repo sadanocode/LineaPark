@@ -5,10 +5,10 @@ import random
 import src.logger as logger
 import src.Exchanges.okxOperations as okxOp
 import src.Helpers.gasPriceChecker as gPC
-from src.Liquidity.liquidity import liq_ops
 import src.Helpers.userHelper as userHelper
 from threading import Thread
 import src.Bridges.stargateBridge as stargateBridge
+from src.Market.marketOp import market_ops
 
 
 logger.create_xml()
@@ -31,22 +31,19 @@ def main():
 
         # Вывод с биржи
         if settings.exc_withdraw == 1:
-            res, rc = okxOp.withdraw(wallet, nt.linea_net)
-            if int(rc) > 0:
-                logger.cs_logger.info(f'{res}')
-                break
+            rc = 1
+            while int(rc) > 0:
+                res, rc = okxOp.withdraw(wallet, nt.linea_net)
+                if int(rc) > 0:
+                    logger.cs_logger.info(f'{res}')
+                    logger.cs_logger.info(f'Доп попытка вывода')
 
         balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
         nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
         logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
 
         # Операции
-        #gPC.check_limit()
-        liq_ops(wallet)
-
-        balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
-        nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
-        logger.rewrite_overall(wallet, balance_end, nonce)
+        market_ops(wallet)
 
         # Депозит на биржу или бридж
         if settings.exc_deposit == 1:

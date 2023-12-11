@@ -37,9 +37,9 @@ def check_tx_status(txn_hash, net, sec=3):
     return status
 
 
-def approve_amount(private_key, address, spender_address, contract, net, token_amount, approve_sum=2 ** 256 - 1):
+def approve_amount(private_key, address, spender_address, token_contract, net, token_amount, approve_sum=2 ** 256 - 1):
     try:
-        allowance = contract.functions.allowance(address, spender_address).call()
+        allowance = token_contract.functions.allowance(address, spender_address).call()
         if allowance < token_amount:
             logger.cs_logger.info(f'Даем разрешение смартконтракту использовать токен')
 
@@ -53,7 +53,7 @@ def approve_amount(private_key, address, spender_address, contract, net, token_a
                 'gasPrice': gas_price,
                 'nonce': nonce,
             }
-            txn_approve = contract.functions.approve(
+            txn_approve = token_contract.functions.approve(
                 spender_address,
                 approve_sum
             ).build_transaction(dict_transaction_approve)

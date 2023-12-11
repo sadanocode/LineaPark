@@ -1,3 +1,4 @@
+import settings
 import settings as stgs
 import src.logger as logger
 from src.networks import ethereum_net
@@ -26,11 +27,32 @@ def get_info(wallets):
     else:
         logger.cs_logger.info(f'Депозит на адрес биржи отключен!')
 
-    logger.cs_logger.info(f'Депозит ликвидности ETH на сумму: {stgs.liq_volume[0]} - {stgs.liq_volume[1]} USD')
+    logger.cs_logger.info(f'Свапаем ETH на сумму: {stgs.usdc_volume[0]} - {stgs.usdc_volume[1]} USDC '
+                          f'| slippage= {settings.slippage_USDC * 100.0} % ')
 
     logger.cs_logger.info(f'Задержки между кошельками: от {stgs.wallet_delay[0]} до {stgs.wallet_delay[1]} сек')
     logger.cs_logger.info(f'Задержки между транзакциями: от {stgs.txn_delay[0]} до {stgs.txn_delay[1]} сек')
     logger.cs_logger.info(f'Задержки после бриджа: от {stgs.bridge_delay[0]} до {stgs.bridge_delay[1]} сек')
+
+    if stgs.eth_swap_switch == 1:
+        logger.cs_logger.info(f'Свап ETH на USDC включен')
+    else:
+        logger.cs_logger.info(f'Свап ETH на USDC ОТКЛЮЧЕН')
+
+    if stgs.usdc_swap_switch == 1:
+        logger.cs_logger.info(f'Свап USDC на ETH включен')
+    else:
+        logger.cs_logger.info(f'Свап USDC на ETH ОТКЛЮЧЕН')
+
+    if stgs.zkdx_switch == 1:
+        logger.cs_logger.info(f'Операции с ZKDX включены')
+    else:
+        logger.cs_logger.info(f'Операции с ZKDX ОТКЛЮЧЕНЫ')
+
+    if stgs.fwdx_swith == 1:
+        logger.cs_logger.info(f'Операции с FWDX включены')
+    else:
+        logger.cs_logger.info(f'Операции с FWDX ОТКЛЮЧЕНЫ')
 
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:
