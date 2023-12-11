@@ -49,12 +49,14 @@ def build_txn_deposit(wallet, amount_token):
 def deposit(wallet):
     try:
         script_time = get_curr_time()
-        token_amount = get_usdc_balance(wallet.address)
+        token_balance = get_usdc_balance(wallet.address) / 10 ** 6
+        token_amount_trunc = trunc_value(token_balance, 2, 2) - get_random_value(0.30, 0.95, 2)
+        token_amount = int(token_amount_trunc * 10 ** 6)
         if token_amount == 0:
             logger.cs_logger.info(f'#   Баланс USDС равен 0')
             return True
 
-        balance_start_usdc = token_amount / 10 ** 6
+        balance_start_usdc = token_amount_trunc
         logger.cs_logger.info(f'#   Делаем депозит {balance_start_usdc} USDC в FWDX')
 
         approve_usdc(wallet, token_amount)
