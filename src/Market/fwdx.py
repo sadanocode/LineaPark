@@ -62,8 +62,7 @@ def deposit(wallet):
             logger.cs_logger.info(f'#   Баланс USDС слишком мал {token_balance} ')
             return True
 
-        logger.cs_logger.info(f'#   Делаем депозит {token_balance} USDC в FWDX')
-
+        logger.cs_logger.info(f'#   Делаем депозит {token_amount_trunc} USDC в FWDX')
         approve_usdc(wallet, token_balance_wei)
         txn = build_txn_deposit(wallet, token_amount_wei)
         estimate_gas = check_estimate_gas(txn, linea_net)

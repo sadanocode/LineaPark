@@ -40,6 +40,8 @@ def check_tx_status(txn_hash, net, sec=3):
 def approve_amount(private_key, address, spender_address, token_contract, net, token_amount, approve_sum=2 ** 256 - 1):
     try:
         allowance = token_contract.functions.allowance(address, spender_address).call()
+        decimals = token_contract.functions.decimals().call()
+        logger.cs_logger.info(f'Сумма токена разрешенная смартконтракту: {allowance / 10 ** decimals}')
         if allowance < token_amount:
             logger.cs_logger.info(f'Даем разрешение смартконтракту использовать токен')
 
