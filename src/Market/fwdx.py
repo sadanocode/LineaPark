@@ -49,18 +49,23 @@ def build_txn_deposit(wallet, amount_token):
 def deposit(wallet):
     try:
         script_time = get_curr_time()
-        token_balance = get_usdc_balance(wallet.address) / 10 ** 6
-        token_amount_trunc = trunc_value(token_balance, 2, 2) - get_random_value(0.30, 0.95, 2)
-        token_amount = int(token_amount_trunc * 10 ** 6)
-        if token_amount == 0:
+        token_balance_wei = get_usdc_balance(wallet.address)
+        if token_balance_wei == 0:
             logger.cs_logger.info(f'#   Баланс USDС равен 0')
             return True
 
-        balance_start_usdc = token_amount_trunc
-        logger.cs_logger.info(f'#   Делаем депозит {balance_start_usdc} USDC в FWDX')
+        token_balance = token_balance_wei / 10 ** 6
+        token_amount_trunc = (trunc_value(token_balance, 2, 2) -
+                              get_random_value(settings.usdc_trunc[0], settings.usdc_trunc[1], 2))
+        token_amount_wei = int(token_amount_trunc * 10 ** 6)
+        if token_amount_wei < 0:
+            logger.cs_logger.info(f'#   Баланс USDС слишком мал {token_balance} ')
+            return True
 
-        approve_usdc(wallet, token_amount)
-        txn = build_txn_deposit(wallet, token_amount)
+        logger.cs_logger.info(f'#   Делаем депозит {token_balance} USDC в FWDX')
+
+        approve_usdc(wallet, token_balance_wei)
+        txn = build_txn_deposit(wallet, token_amount_wei)
         estimate_gas = check_estimate_gas(txn, linea_net)
 
         if type(estimate_gas) is str:
@@ -72,12 +77,12 @@ def deposit(wallet):
             logger.cs_logger.info(f'Hash: {txn_hash}')
 
             wallet.txn_num += 1
-            wallet.fwdx_value += balance_start_usdc
+            wallet.fwdx_value += token_amount_trunc
             delay_sleep(settings.txn_delay[0], settings.txn_delay[1])
             balance_end_usdc = get_usdc_balance(wallet.address) / 10 ** 6
-            operation_value = f'- {trunc_value(balance_start_usdc, 2, 2)} USDC'
+            operation_value = f'- {token_amount_trunc} USDC'
             log = logger.LogMarket(wallet.wallet_num, wallet.txn_num, wallet.address, 'FWDX deposit',
-                                   operation_value, txn_hash, balance_start_usdc, balance_end_usdc)
+                                   operation_value, txn_hash, token_balance, balance_end_usdc)
             log.write_log(script_time)
         return True
     except Exception as ex:
