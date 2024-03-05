@@ -8,8 +8,9 @@ import src.Helpers.gasPriceChecker as gPC
 import src.Helpers.userHelper as userHelper
 from threading import Thread
 import src.Bridges.stargateBridge as stargateBridge
-from src.Quests.daily import sending
-from src.Quests.trobSwap import swapping
+from src.Quests.yooldo.daily import sending
+from src.Quests.yooldo.trobSwap import swapping
+from src.Quests.Pictographs.mint import minting as pictographs_mint, staking as pictographs_stake
 
 
 logger.create_xml()
@@ -42,13 +43,37 @@ def main():
         balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
         nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
         logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
+        modules = list()
 
         # Операции
-        if settings.daily_switch == 1:
-            sending(wallet)
+        if settings.yooldo_enable == 1:
+            modules.append('yooldo')
+            random.shuffle(modules)
 
-        if settings.trob_swap_switch == 1:
-            swapping(wallet)
+        if settings.pictographs_enable == 1:
+            modules.append('pictographs')
+            random.shuffle(modules)
+
+        for module in modules:
+
+            if module == 'yooldo':
+                logger.cs_logger.info(f'    ***   Модуль Yooldo   ***   ')
+                if settings.daily_switch == 1:
+                    gPC.check_limit()
+                    sending(wallet)
+
+                if settings.trob_swap_switch == 1:
+                    gPC.check_limit()
+                    swapping(wallet)
+
+            if module == 'pictographs':
+                logger.cs_logger.info(f'    ***   Модуль Pictographs   ***   ')
+                if settings.pictographs_mint_switch == 1:
+                    gPC.check_limit()
+                    pictographs_mint(wallet)
+                if settings.pictographs_stake_switch == 1:
+                    gPC.check_limit()
+                    pictographs_stake(wallet)
 
         # Депозит на биржу или бридж
         if settings.exc_deposit == 1:

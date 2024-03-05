@@ -73,8 +73,15 @@ zkdx_switch = 0  # Включен ли свап USDC на ZUSD и обратно
 
 
 #       / Параметры операций для квестов /
+yooldo_enable = 1  # Активны ли модули yooldo
 daily_switch = 1  # Включен ли модуль Daily Stand-up
 trob_swap_switch = 1  # Включен ли модуль свапа USDC на TROB
+
+pictographs_enable = 1  # Активны ли модули Pictographs
+pictographs_mint_switch = 1  # Включен ли минт nft Pictographs
+pictographs_stake_switch = 1  # Включен ли стейкинг nft Pictographs
+
+abyss_world_mint_switch = 1  # Включен ли минт Abyss World - еще не готов
 
 usdc_volume = [1, 5]  # Количество USDC на которое будем свапать эфир для дальнейших операций
 eth_volume_digs = [5, 6]  # Количество знаков после запятой для числа эфира, которое свапаем на USDC
