@@ -8,7 +8,8 @@ import src.Helpers.gasPriceChecker as gPC
 import src.Helpers.userHelper as userHelper
 from threading import Thread
 import src.Bridges.stargateBridge as stargateBridge
-from src.Market.marketOp import market_ops
+from src.Quests.daily import sending
+from src.Quests.trobSwap import swapping
 
 
 logger.create_xml()
@@ -43,7 +44,11 @@ def main():
         logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
 
         # Операции
-        market_ops(wallet)
+        if settings.daily_switch == 1:
+            sending(wallet)
+
+        if settings.trob_swap_switch == 1:
+            swapping(wallet)
 
         # Депозит на биржу или бридж
         if settings.exc_deposit == 1:

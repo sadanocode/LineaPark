@@ -29,3 +29,8 @@ ZUSD_token = Token(
     '0x2167C4D5FE05A1250588F0B8AA83A599e7732eae'
 )
 contract_ZUSD = linea_net.web3.eth.contract(Web3.to_checksum_address(ZUSD_token.address), abi=ERC20_ABI)
+
+TROB_token = Token(
+    'TROB',
+    '0x3f61882ACF17110536F9aFC65e60216927871f2b'
+)

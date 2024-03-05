@@ -34,25 +34,15 @@ def get_info(wallets):
     logger.cs_logger.info(f'Задержки между транзакциями: от {stgs.txn_delay[0]} до {stgs.txn_delay[1]} сек')
     logger.cs_logger.info(f'Задержки после бриджа: от {stgs.bridge_delay[0]} до {stgs.bridge_delay[1]} сек')
 
-    if stgs.eth_swap_switch == 1:
-        logger.cs_logger.info(f'Свап ETH на USDC включен')
+    if stgs.daily_switch == 1:
+        logger.cs_logger.info('Модуль Daily Stand-Up Включен')
     else:
-        logger.cs_logger.info(f'Свап ETH на USDC ОТКЛЮЧЕН')
+        logger.cs_logger.info('Модуль Daily Stand-Up Отключен')
 
-    if stgs.usdc_swap_switch == 1:
-        logger.cs_logger.info(f'Свап USDC на ETH включен')
+    if stgs.trob_swap_switch == 1:
+        logger.cs_logger.info('Модуль TROB swap Включен')
     else:
-        logger.cs_logger.info(f'Свап USDC на ETH ОТКЛЮЧЕН')
-
-    if stgs.zkdx_switch == 1:
-        logger.cs_logger.info(f'Операции с ZKDX включены')
-    else:
-        logger.cs_logger.info(f'Операции с ZKDX ОТКЛЮЧЕНЫ')
-
-    if stgs.fwdx_swith == 1:
-        logger.cs_logger.info(f'Операции с FWDX включены')
-    else:
-        logger.cs_logger.info(f'Операции с FWDX ОТКЛЮЧЕНЫ')
+        logger.cs_logger.info('Модуль TROB swap Отключен')
 
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:
