@@ -12,6 +12,7 @@ from src.Quests.yooldo.daily import sending
 from src.Quests.yooldo.trobSwap import swapping
 from src.Quests.Pictographs.mint import minting as pictographs_mint, staking as pictographs_stake
 from src.Quests.AbyssWorld.mint import minting as abyss_mint
+from src.Quests.Omnisea.mint import minting as omnisea_mint
 
 
 logger.create_xml()
@@ -59,6 +60,10 @@ def main():
             modules.append('abyss')
             random.shuffle(modules)
 
+        if settings.omnisea_mint_switch == 1:
+            modules.append('omnisea')
+            random.shuffle(modules)
+
         for module in modules:
 
             if module == 'yooldo':
@@ -84,6 +89,11 @@ def main():
                 logger.cs_logger.info(f'    ***   Модуль Abyss World   ***   ')
                 gPC.check_limit()
                 abyss_mint(wallet)
+
+            if module == 'omnisea':
+                logger.cs_logger.info(f'    ***   Модуль Omnisea  ***   ')
+                gPC.check_limit()
+                omnisea_mint(wallet)
 
         # Депозит на биржу или бридж
         if settings.exc_deposit == 1:
@@ -122,5 +132,7 @@ if settings.start_flag is True:
     check_thread.start()
     main_thread.start()
     main_thread.join()
+    logger.cs_logger.info(f'Нажмите Enter для выхода')
+    input()
     logger.cs_logger.info(f'Выход...')
 #'''

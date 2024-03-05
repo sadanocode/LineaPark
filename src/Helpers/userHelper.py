@@ -65,6 +65,10 @@ def get_info(wallets):
     else:
         logger.cs_logger.info('Модуль Abyss World Отключен')
 
+    if stgs.omnisea_mint_switch == 1:
+        logger.cs_logger.info('Модуль Omnisea Включен')
+    else:
+        logger.cs_logger.info('Модуль Omnisea Отключен')
 
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:
