@@ -27,7 +27,8 @@ def get_info(wallets):
     else:
         logger.cs_logger.info(f'Депозит на адрес биржи отключен!')
 
-    logger.cs_logger.info(f'Свапаем ETH на сумму: {stgs.usdc_volume[0]} - {stgs.usdc_volume[1]} USDC '
+    if stgs.eth_swap_switch == 1:
+        logger.cs_logger.info(f'Свапаем ETH на сумму: {stgs.usdc_volume[0]} - {stgs.usdc_volume[1]} USDC '
                           f'| slippage= {settings.slippage_USDC * 100.0} % ')
 
     logger.cs_logger.info(f'Задержки между кошельками: от {stgs.wallet_delay[0]} до {stgs.wallet_delay[1]} сек')
