@@ -69,7 +69,7 @@ gas_mult = [1.45, 1.75]  # Добавочный процент для колич
 yooldo_enable = 1  # Активны ли модули yooldo
 daily_switch = 1  # Включен ли модуль Daily Stand-up
 trob_swap_switch = 1  # Включен ли модуль свапа USDC на TROB
-usdc_limits = [0.30, 2.00]  # Количество USDC, которое свапаем на TROB, если баланс изначально не был нулевым
+usdc_limits = [0.30, 2.00]  # Количество USDC, которое свапаем на TROB, если USDC уже было на балансе
 
 pictographs_enable = 1  # Активны ли модули Pictographs
 pictographs_mint_switch = 1  # Включен ли минт nft Pictographs
@@ -77,7 +77,7 @@ pictographs_stake_switch = 1  # Включен ли стейкинг nft Pictogr
 
 abyss_world_mint_switch = 1  # Включен ли минт Abyss World
 
-usdc_volume = [1, 5]  # Количество USDC на которое будем свапать эфир для дальнейших операций
+usdc_volume = [0.5, 2]  # Количество USDC на которое будем свапать эфир для дальнейших операций
 eth_volume_digs = [5, 6]  # Количество знаков после запятой для числа эфира, которое свапаем на USDC
 slippage_USDC = 0.020  # slippage для свапов эфира на USDC и обратно
 
