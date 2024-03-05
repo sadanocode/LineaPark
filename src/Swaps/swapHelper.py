@@ -1,6 +1,6 @@
 import settings
 from random import randint
-from src.Helpers.helper import get_price, trunc_value
+from src.Helpers.helper import get_price, trunc_value, get_random_value
 from src.Swaps.tokens import contract_USDC
 
 
@@ -10,7 +10,7 @@ def get_txn_count(txns_count):
 
 
 def get_eth_value(usdc_volume):
-    usdc_value = randint(usdc_volume[0], usdc_volume[1])
+    usdc_value = get_random_value(usdc_volume[0], usdc_volume[1], 2)
     price = get_price('ETH')
     eth_value = usdc_value / price
     eth_value_trunc = trunc_value(eth_value, settings.eth_volume_digs[0], settings.eth_volume_digs[1])
