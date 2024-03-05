@@ -11,6 +11,7 @@ import src.Bridges.stargateBridge as stargateBridge
 from src.Quests.yooldo.daily import sending
 from src.Quests.yooldo.trobSwap import swapping
 from src.Quests.Pictographs.mint import minting as pictographs_mint, staking as pictographs_stake
+from src.Quests.AbyssWorld.mint import minting as abyss_mint
 
 
 logger.create_xml()
@@ -54,6 +55,10 @@ def main():
             modules.append('pictographs')
             random.shuffle(modules)
 
+        if settings.abyss_world_mint_switch == 1:
+            modules.append('abyss')
+            random.shuffle(modules)
+
         for module in modules:
 
             if module == 'yooldo':
@@ -74,6 +79,11 @@ def main():
                 if settings.pictographs_stake_switch == 1:
                     gPC.check_limit()
                     pictographs_stake(wallet)
+
+            if module == 'abyss':
+                logger.cs_logger.info(f'    ***   Модуль Abyss World   ***   ')
+                gPC.check_limit()
+                abyss_mint(wallet)
 
         # Депозит на биржу или бридж
         if settings.exc_deposit == 1:

@@ -60,6 +60,12 @@ def get_info(wallets):
     else:
         logger.cs_logger.info('Квесты Pictographs Отключены')
 
+    if stgs.abyss_world_mint_switch == 1:
+        logger.cs_logger.info('Модуль Abyss World Включен')
+    else:
+        logger.cs_logger.info('Модуль Abyss World Отключен')
+
+
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:
         logger.cs_logger.info(f'№ {wallet.wallet_num} | {wallet.address} -- {wallet.exchange_address}')

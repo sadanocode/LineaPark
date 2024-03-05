@@ -65,32 +65,35 @@ slippage = 0.010  # Проскальзывание для бриджа (напр
 gas_price_mult = [1.02, 1.04]  # Наценка на газ
 gas_mult = [1.45, 1.75]  # Добавочный процент для количества газа
 
-#       / Параметры модулей /
-eth_swap_switch = 0  # Включен ли свап ETH на USDC перед операциями
-usdc_swap_switch = 0  # Включен ли свап USDC на ETH после операций
-fwdx_swith = 0  # Включен ли депозит FWDX
-zkdx_switch = 0  # Включен ли свап USDC на ZUSD и обратно в ZKDX
-
-
 #       / Параметры операций для квестов /
 yooldo_enable = 1  # Активны ли модули yooldo
 daily_switch = 1  # Включен ли модуль Daily Stand-up
 trob_swap_switch = 1  # Включен ли модуль свапа USDC на TROB
+usdc_limits = [0.30, 2.00]  # Количество USDC, которое свапаем на TROB, если баланс изначально не был нулевым
 
 pictographs_enable = 1  # Активны ли модули Pictographs
 pictographs_mint_switch = 1  # Включен ли минт nft Pictographs
 pictographs_stake_switch = 1  # Включен ли стейкинг nft Pictographs
 
-abyss_world_mint_switch = 1  # Включен ли минт Abyss World - еще не готов
+abyss_world_mint_switch = 1  # Включен ли минт Abyss World
 
 usdc_volume = [1, 5]  # Количество USDC на которое будем свапать эфир для дальнейших операций
 eth_volume_digs = [5, 6]  # Количество знаков после запятой для числа эфира, которое свапаем на USDC
 slippage_USDC = 0.020  # slippage для свапов эфира на USDC и обратно
 
+try_delay = [5, 7]  # Перерыв между доп попытками
+
+
+#       / Параметры старых модулей /
+eth_swap_switch = 0  # Включен ли свап ETH на USDC перед операциями
+usdc_swap_switch = 0  # Включен ли свап USDC на ETH после операций
+fwdx_swith = 0  # Включен ли депозит FWDX
+zkdx_switch = 0  # Включен ли свап USDC на ZUSD и обратно в ZKDX
+
 usdc_trunc = [10.80, 12.10]  # Сумма в USDC которая будет отрезаться от суммы депозита FWDX
 weth_volume = [0.01, 0.007]  # Количество wETH, которое требуем взамен USDC для FWDX
 weth_digs = [3, 5]  # Количество знаков после запятой для запрашиваемого количества wETH
-try_delay = [5, 7]  # Перерыв между доп попытками
+
 
 #       / Параметры для работы скрипта /
 exc_remains = [0.000003, 0.000005]  # Запас эфира при переводе на адрес биржи и бридже (ETH), чтобы точно прошло

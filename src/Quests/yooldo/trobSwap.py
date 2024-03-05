@@ -1,7 +1,7 @@
 from src.Helpers.txnHelper import exec_txn, check_estimate_gas, get_txn_dict, approve_amount
 from src.networks import linea_net
 from src.logger import cs_logger
-from src.Helpers.helper import delay_sleep
+from src.Helpers.helper import delay_sleep, get_random_value
 import settings
 import eth_abi
 from src.Swaps.tokens import USDC_token, contract_USDC, TROB_token
@@ -30,9 +30,12 @@ def swap_usdc_to_trob(wallet):
         if usdc_balance <= int(0.3*10**6):
             eth_value = get_eth_value()
             swap_eth_to_usdc(wallet, eth_value)
-            usdc_balance = contract_USDC.functions.balanceOf(wallet.address).call()
-
-        usdc_value = (usdc_balance // 10 ** 4) * 10 ** 4
+            usdc_swap_balance = contract_USDC.functions.balanceOf(wallet.address).call()
+        else:
+            usdc_swap_balance = int(get_random_value(settings.usdc_limits[0], settings.usdc_limits[1], 2) * 10 ** 6)
+            if usdc_balance < usdc_swap_balance:
+                usdc_swap_balance = usdc_balance
+        usdc_value = (usdc_swap_balance // 10 ** 4) * 10 ** 4
         if usdc_value <= 9999:
             return False
         cs_logger.info(f'Делаем свап {(usdc_value / 10 ** 6)} USDC на TROB')
