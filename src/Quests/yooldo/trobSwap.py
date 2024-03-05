@@ -27,8 +27,8 @@ def build_txn_swap(wallet, usdc_value):
 def swap_usdc_to_trob(wallet):
     try:
         usdc_balance = contract_USDC.functions.balanceOf(wallet.address).call()
-        if usdc_balance <= int(0.3*10**6):
-            eth_value = get_eth_value()
+        if usdc_balance < int(0.01*10**6):
+            eth_value = get_eth_value(settings.usdc_limits)
             swap_eth_to_usdc(wallet, eth_value)
             usdc_swap_balance = contract_USDC.functions.balanceOf(wallet.address).call()
         else:

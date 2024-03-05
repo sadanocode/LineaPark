@@ -9,8 +9,8 @@ def get_txn_count(txns_count):
     return txn_count
 
 
-def get_eth_value():
-    usdc_value = randint(settings.usdc_volume[0], settings.usdc_volume[1])
+def get_eth_value(usdc_volume):
+    usdc_value = randint(usdc_volume[0], usdc_volume[1])
     price = get_price('ETH')
     eth_value = usdc_value / price
     eth_value_trunc = trunc_value(eth_value, settings.eth_volume_digs[0], settings.eth_volume_digs[1])
