@@ -34,15 +34,31 @@ def get_info(wallets):
     logger.cs_logger.info(f'Задержки между транзакциями: от {stgs.txn_delay[0]} до {stgs.txn_delay[1]} сек')
     logger.cs_logger.info(f'Задержки после бриджа: от {stgs.bridge_delay[0]} до {stgs.bridge_delay[1]} сек')
 
-    if stgs.daily_switch == 1:
-        logger.cs_logger.info('Модуль Daily Stand-Up Включен')
-    else:
-        logger.cs_logger.info('Модуль Daily Stand-Up Отключен')
+    if stgs.yooldo_enable == 1:
+        if stgs.daily_switch == 1:
+            logger.cs_logger.info('Модуль Daily Stand-Up Включен')
+        else:
+            logger.cs_logger.info('Модуль Daily Stand-Up Отключен')
 
-    if stgs.trob_swap_switch == 1:
-        logger.cs_logger.info('Модуль TROB swap Включен')
+        if stgs.trob_swap_switch == 1:
+            logger.cs_logger.info('Модуль TROB swap Включен')
+        else:
+            logger.cs_logger.info('Модуль TROB swap Отключен')
     else:
-        logger.cs_logger.info('Модуль TROB swap Отключен')
+        logger.cs_logger.info('Квесты Yooldo Отключены')
+
+    if stgs.pictographs_enable == 1:
+        if stgs.pictographs_mint_switch == 1:
+            logger.cs_logger.info('Модуль Pictographs Mint Включен')
+        else:
+            logger.cs_logger.info('Модуль Pictographs Mint Отключен')
+
+        if stgs.pictographs_stake_switch == 1:
+            logger.cs_logger.info('Модуль Pictographs Stake Включен')
+        else:
+            logger.cs_logger.info('Модуль Pictographs Stake Отключен')
+    else:
+        logger.cs_logger.info('Квесты Pictographs Отключены')
 
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:
