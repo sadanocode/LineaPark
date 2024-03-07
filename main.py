@@ -8,11 +8,12 @@ import src.Helpers.gasPriceChecker as gPC
 import src.Helpers.userHelper as userHelper
 from threading import Thread
 import src.Bridges.stargateBridge as stargateBridge
-from src.Quests.yooldo.daily import sending
-from src.Quests.yooldo.trobSwap import swapping
-from src.Quests.Pictographs.mint import minting as pictographs_mint, staking as pictographs_stake
-from src.Quests.AbyssWorld.mint import minting as abyss_mint
-from src.Quests.Omnisea.mint import minting as omnisea_mint
+from src.Swaps.swapOps import swap_usdc_remains
+from src.Quests.Week2.yooldo.daily import sending
+from src.Quests.Week2.yooldo.trobSwap import swapping
+from src.Quests.Week2.Pictographs.mint import minting as pictographs_mint, staking as pictographs_stake
+from src.Quests.Week2.AbyssWorld.mint import minting as abyss_mint
+from src.Quests.Week2.Omnisea.mint import minting as omnisea_mint
 
 
 logger.create_xml()
@@ -94,6 +95,10 @@ def main():
                 logger.cs_logger.info(f'    ***   Модуль Omnisea  ***   ')
                 gPC.check_limit()
                 omnisea_mint(wallet)
+
+        # Свапаем остатки USDC на эфир после всех операций, если нужно
+        gPC.check_limit()
+        swap_usdc_remains(wallet)
 
         # Депозит на биржу или бридж
         if settings.exc_deposit == 1:
