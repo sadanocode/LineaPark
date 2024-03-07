@@ -6,6 +6,7 @@ from src.Helpers.helper import delay_sleep
 
 
 def swap_usdc_remains(wallet):
+    cs_logger.info(f'    ***   Свапаем остатки USDC на эфир  ***   ')
     txn_status = False
     if settings.usdc_swap_switch == 1:
         token_value = get_usdc_balance(wallet.address)
