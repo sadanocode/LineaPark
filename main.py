@@ -14,6 +14,8 @@ from src.Quests.Week2.yooldo.trobSwap import swapping
 from src.Quests.Week2.Pictographs.mint import minting as pictographs_mint, staking as pictographs_stake
 from src.Quests.Week2.AbyssWorld.mint import minting as abyss_mint
 from src.Quests.Week2.Omnisea.mint import minting as omnisea_mint
+from src.Quests.Week1.GamerBoom.mint import minting as gamer_boom_minting
+from src.Quests.questHelper import get_modules_list
 
 
 logger.create_xml()
@@ -46,24 +48,8 @@ def main():
         balance_end = nt.linea_net.web3.from_wei(nt.linea_net.web3.eth.get_balance(wallet.address), 'ether')
         nonce = nt.linea_net.web3.eth.get_transaction_count(wallet.address)
         logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
-        modules = list()
 
-        # Операции
-        if settings.yooldo_enable == 1:
-            modules.append('yooldo')
-            random.shuffle(modules)
-
-        if settings.pictographs_enable == 1:
-            modules.append('pictographs')
-            random.shuffle(modules)
-
-        if settings.abyss_world_mint_switch == 1:
-            modules.append('abyss')
-            random.shuffle(modules)
-
-        if settings.omnisea_mint_switch == 1:
-            modules.append('omnisea')
-            random.shuffle(modules)
+        modules = get_modules_list()
 
         for module in modules:
 
@@ -95,6 +81,11 @@ def main():
                 logger.cs_logger.info(f'    ***   Модуль Omnisea  ***   ')
                 gPC.check_limit()
                 omnisea_mint(wallet)
+
+            if module == 'gamerboom':
+                logger.cs_logger.info(f'    ***   Модуль GamerBoom  ***   ')
+                gPC.check_limit()
+                gamer_boom_minting(wallet)
 
         # Свапаем остатки USDC на эфир после всех операций, если нужно
         gPC.check_limit()

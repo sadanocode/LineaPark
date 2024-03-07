@@ -66,20 +66,22 @@ gas_price_mult = [1.02, 1.04]  # Наценка на газ
 gas_mult = [1.45, 1.75]  # Добавочный процент для количества газа
 
 #       / Параметры операций для квестов /
-yooldo_enable = 1  # Активны ли модули yooldo
+yooldo_enable = 0  # Активны ли модули yooldo
 daily_switch = 1  # Включен ли модуль Daily Stand-up
 trob_swap_switch = 1  # Включен ли модуль свапа USDC на TROB
 usdc_limits = [0.01, 0.3]  # Количество USDC, которое свапаем на TROB. Если USDC нет на балансе, то сначала ETH на USDC на указанные значения.
 eth_volume_digs = [5, 6]  # Количество знаков после запятой для числа эфира, которое свапаем на USDC
 slippage_USDC = 0.020  # slippage для свапов эфира на USDC и обратно
 
-pictographs_enable = 1  # Активны ли модули Pictographs
+pictographs_enable = 0  # Активны ли модули Pictographs
 pictographs_mint_switch = 1  # Включен ли минт nft Pictographs
 pictographs_stake_switch = 1  # Включен ли стейкинг nft Pictographs
 
-abyss_world_mint_switch = 1  # Включен ли минт Abyss World
+abyss_world_mint_switch = 0  # Включен ли минт Abyss World
 
-omnisea_mint_switch = 1  # Включен ли минт Omnisea
+omnisea_mint_switch = 0  # Включен ли минт Omnisea
+
+gamer_boom_mint_switch = 1  # Включен ли минт GamerBoom
 
 try_delay = [5, 7]  # Перерыв между доп попытками
 
