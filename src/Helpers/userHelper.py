@@ -35,6 +35,11 @@ def get_info(wallets):
     logger.cs_logger.info(f'Задержки между транзакциями: от {stgs.txn_delay[0]} до {stgs.txn_delay[1]} сек')
     logger.cs_logger.info(f'Задержки после бриджа: от {stgs.bridge_delay[0]} до {stgs.bridge_delay[1]} сек')
 
+    if stgs.usdc_swap_switch == 1:
+        logger.cs_logger.info('Свап остатков USDC на эфир после операций Включен')
+    else:
+        logger.cs_logger.info('Свап остатков USDC на эфир после операций Отключен')
+
     if stgs.yooldo_enable == 1:
         if stgs.daily_switch == 1:
             logger.cs_logger.info('Модуль Daily Stand-Up Включен')
