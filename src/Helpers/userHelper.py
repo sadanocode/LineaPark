@@ -40,6 +40,19 @@ def get_info(wallets):
     else:
         logger.cs_logger.info('Свап остатков USDC на эфир после операций Отключен')
 
+    if stgs.gamer_boom_enable == 1:
+        if stgs.gamer_boom_proof_switch == 1:
+            logger.cs_logger.info('Модуль GamerBoom Proof Включен')
+        else:
+            logger.cs_logger.info('Модуль GamerBoom Proof Отключен')
+
+        if stgs.gamer_boom_mint_switch == 1:
+            logger.cs_logger.info('Модуль GamerBoom Mint Включен')
+        else:
+            logger.cs_logger.info('Модуль GamerBoom Mint Отключен')
+    else:
+        logger.cs_logger.info('Квесты GamerBoom Отключены')
+
     if stgs.yooldo_enable == 1:
         if stgs.daily_switch == 1:
             logger.cs_logger.info('Модуль Daily Stand-Up Включен')
@@ -76,10 +89,20 @@ def get_info(wallets):
     else:
         logger.cs_logger.info('Модуль Omnisea Отключен')
 
-    if stgs.gamer_boom_mint_switch == 1:
-        logger.cs_logger.info('Модуль GamerBoom Включен')
+    if stgs.dmail_switch == 1:
+        logger.cs_logger.info('Модуль Dmail Включен')
     else:
-        logger.cs_logger.info('Модуль GamerBoom Отключен')
+        logger.cs_logger.info('Модуль Dmail Отключен')
+
+    if stgs.as_match_mint_switch == 1:
+        logger.cs_logger.info('Модуль AsMatch Включен')
+    else:
+        logger.cs_logger.info('Модуль AsMatch Отключен')
+
+    if stgs.read_on_switch == 1:
+        logger.cs_logger.info('Модуль ReadOn Включен')
+    else:
+        logger.cs_logger.info('Модуль ReadOn Отключен')
 
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:

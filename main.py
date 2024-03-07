@@ -9,13 +9,8 @@ import src.Helpers.userHelper as userHelper
 from threading import Thread
 import src.Bridges.stargateBridge as stargateBridge
 from src.Swaps.swapOps import swap_usdc_remains
-from src.Quests.Week2.yooldo.daily import sending
-from src.Quests.Week2.yooldo.trobSwap import swapping
-from src.Quests.Week2.Pictographs.mint import minting as pictographs_mint, staking as pictographs_stake
-from src.Quests.Week2.AbyssWorld.mint import minting as abyss_mint
-from src.Quests.Week2.Omnisea.mint import minting as omnisea_mint
-from src.Quests.Week1.GamerBoom.mint import minting as gamer_boom_minting
 from src.Quests.questHelper import get_modules_list
+from src.Quests.questOps import quest_ops
 
 
 logger.create_xml()
@@ -50,42 +45,7 @@ def main():
         logger.write_overall(wallet, balance_st, balance_end, script_time, nonce)
 
         modules = get_modules_list()
-
-        for module in modules:
-
-            if module == 'yooldo':
-                logger.cs_logger.info(f'    ***   Модуль Yooldo   ***   ')
-                if settings.daily_switch == 1:
-                    gPC.check_limit()
-                    sending(wallet)
-
-                if settings.trob_swap_switch == 1:
-                    gPC.check_limit()
-                    swapping(wallet)
-
-            if module == 'pictographs':
-                logger.cs_logger.info(f'    ***   Модуль Pictographs   ***   ')
-                if settings.pictographs_mint_switch == 1:
-                    gPC.check_limit()
-                    pictographs_mint(wallet)
-                if settings.pictographs_stake_switch == 1:
-                    gPC.check_limit()
-                    pictographs_stake(wallet)
-
-            if module == 'abyss':
-                logger.cs_logger.info(f'    ***   Модуль Abyss World   ***   ')
-                gPC.check_limit()
-                abyss_mint(wallet)
-
-            if module == 'omnisea':
-                logger.cs_logger.info(f'    ***   Модуль Omnisea  ***   ')
-                gPC.check_limit()
-                omnisea_mint(wallet)
-
-            if module == 'gamerboom':
-                logger.cs_logger.info(f'    ***   Модуль GamerBoom  ***   ')
-                gPC.check_limit()
-                gamer_boom_minting(wallet)
+        quest_ops(wallet, modules)
 
         # Свапаем остатки USDC на эфир после всех операций, если нужно
         gPC.check_limit()

@@ -66,6 +66,15 @@ gas_price_mult = [1.02, 1.04]  # Наценка на газ
 gas_mult = [1.45, 1.75]  # Добавочный процент для количества газа
 
 #       / Параметры операций для квестов /
+try_delay = [5, 7]  # Перерыв между доп попытками
+
+# ///// Параметры для квестов Week 1
+gamer_boom_enable = 0  # Активны ли модули GamerBoom
+gamer_boom_mint_switch = 1  # Включен ли минт GamerBoom
+gamer_boom_proof_switch = 1  # Включен ли proof GamerBoom
+
+
+# ///// Параметры для квестов Week 2
 yooldo_enable = 0  # Активны ли модули yooldo
 daily_switch = 1  # Включен ли модуль Daily Stand-up
 trob_swap_switch = 1  # Включен ли модуль свапа USDC на TROB
@@ -81,9 +90,13 @@ abyss_world_mint_switch = 0  # Включен ли минт Abyss World
 
 omnisea_mint_switch = 0  # Включен ли минт Omnisea
 
-gamer_boom_mint_switch = 1  # Включен ли минт GamerBoom
 
-try_delay = [5, 7]  # Перерыв между доп попытками
+# ///// Параметры для квестов Week 3
+dmail_switch = 0  # Активен ли модуль Dmail
+
+as_match_mint_switch = 0  # Активен ли модуль AsMatch
+
+read_on_switch = 0  # Активен ли модуль ReadOn
 
 
 #       / Параметры старых модулей /
