@@ -12,6 +12,7 @@ from src.Helpers.gasPriceChecker import check_limit
 from src.Quests.Week3.Dmail.sendMail import dmail_send
 from src.Quests.questHelper import running
 from src.Quests.Week3.ReadOn.curate import read_on_curate
+from src.Quests.Week3.SendingMe.abuse import sending_me
 
 
 def quest_ops(wallet, modules):
@@ -69,3 +70,8 @@ def quest_ops(wallet, modules):
             cs_logger.info(f'    ***   Модуль ReadOn  ***   ')
             check_limit()
             running(wallet, read_on_curate)
+
+        if module == 'sendingme':
+            cs_logger.info(f'    ***   Модуль SendingMe  ***   ')
+            check_limit()
+            running(wallet, sending_me)

@@ -48,6 +48,10 @@ def get_modules_list():
         modules.append('readon')
         shuffle(modules)
 
+    if settings.sending_me_switch == 1:
+        modules.append('sendingme')
+        shuffle(modules)
+
     return modules
 
 

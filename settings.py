@@ -98,6 +98,10 @@ as_match_mint_switch = 0  # Активен ли модуль AsMatch
 
 read_on_switch = 0  # Активен ли модуль ReadOn
 
+sending_me_switch = 0  # Активен ли модуль SendingMe
+sending_me_eth_value = [0.00000001, 0.00000002]  # Количество эфира, посылаемое на адрес контракта
+sending_me_eth_digs = 8  # Знаков после запятой для эфира
+
 
 #       / Параметры старых модулей /
 eth_swap_switch = 0  # Включен ли свап ETH на USDC перед операциями
