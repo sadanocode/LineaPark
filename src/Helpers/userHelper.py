@@ -109,6 +109,11 @@ def get_info(wallets):
     else:
         logger.cs_logger.info('Модуль SendingMe Отключен')
 
+    if stgs.gamic_switch == 1:
+        logger.cs_logger.info('Модуль Gamic Включен')
+    else:
+        logger.cs_logger.info('Модуль Gamic Отключен')
+
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:
         logger.cs_logger.info(f'№ {wallet.wallet_num} | {wallet.address} -- {wallet.exchange_address}')

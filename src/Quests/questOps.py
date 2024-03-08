@@ -13,6 +13,7 @@ from src.Quests.Week3.Dmail.sendMail import dmail_send
 from src.Quests.questHelper import running
 from src.Quests.Week3.ReadOn.curate import read_on_curate
 from src.Quests.Week3.SendingMe.abuse import sending_me
+from src.Quests.Week3.Gamic.swap import gamic_swap
 
 
 def quest_ops(wallet, modules):
@@ -75,3 +76,8 @@ def quest_ops(wallet, modules):
             cs_logger.info(f'    ***   Модуль SendingMe  ***   ')
             check_limit()
             running(wallet, sending_me)
+
+        if module == 'gamic':
+            cs_logger.info(f'    ***   Модуль Gamic  ***   ')
+            check_limit()
+            running(wallet, gamic_swap)

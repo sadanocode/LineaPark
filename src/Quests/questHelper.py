@@ -52,6 +52,10 @@ def get_modules_list():
         modules.append('sendingme')
         shuffle(modules)
 
+    if settings.gamic_switch == 1:
+        modules.append('gamic')
+        shuffle(modules)
+
     return modules
 
 
@@ -80,7 +84,7 @@ def running(wallet, quest):
     attempt = 1
     txn_status = False
     while txn_status is False and attempt < 4:
-        cs_logger.info(f' _ Попытка №: {attempt}')
+        cs_logger.info(f' // Попытка №: {attempt}')
         txn_status = run_quest(wallet, quest)
         attempt += 1
         if txn_status is False:
