@@ -114,6 +114,11 @@ def get_info(wallets):
     else:
         logger.cs_logger.info('Модуль Gamic Отключен')
 
+    if stgs.bit_avatar_switch == 1:
+        logger.cs_logger.info('Модуль BitAvatar Включен')
+    else:
+        logger.cs_logger.info('Модуль BitAvatar Отключен')
+
     logger.cs_logger.info('Список обнаруженных адресов кошельков -- адресов бирж')
     for wallet in wallets:
         logger.cs_logger.info(f'№ {wallet.wallet_num} | {wallet.address} -- {wallet.exchange_address}')

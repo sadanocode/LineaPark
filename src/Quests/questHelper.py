@@ -56,6 +56,10 @@ def get_modules_list():
         modules.append('gamic')
         shuffle(modules)
 
+    if settings.bit_avatar_switch == 1:
+        modules.append('bitavatar')
+        shuffle(modules)
+
     return modules
 
 

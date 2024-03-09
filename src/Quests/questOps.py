@@ -14,6 +14,7 @@ from src.Quests.questHelper import running
 from src.Quests.Week3.ReadOn.curate import read_on_curate
 from src.Quests.Week3.SendingMe.abuse import sending_me
 from src.Quests.Week3.Gamic.swap import gamic_swap
+from src.Quests.Week3.BitAvatar.checkIn import bit_avatar
 
 
 def quest_ops(wallet, modules):
@@ -81,3 +82,8 @@ def quest_ops(wallet, modules):
             cs_logger.info(f'    ***   Модуль Gamic  ***   ')
             check_limit()
             running(wallet, gamic_swap)
+
+        if module == 'bitavatar':
+            cs_logger.info(f'    ***   Модуль BitAvatar  ***   ')
+            check_limit()
+            running(wallet, bit_avatar)
