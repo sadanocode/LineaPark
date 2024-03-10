@@ -70,43 +70,46 @@ try_delay = [5, 7]  # Перерыв между доп попытками
 
 # ///// Параметры для квестов Week 1
 gamer_boom_enable = 0  # Активны ли модули GamerBoom
-gamer_boom_mint_switch = 1  # Включен ли минт GamerBoom
+gamer_boom_mint_switch = 0  # Включен ли минт GamerBoom - НЕ НУЖЕН, засчитываает без него.
 gamer_boom_proof_switch = 1  # Включен ли proof GamerBoom
 
 
 # ///// Параметры для квестов Week 2
+abyss_world_mint_switch = 0  # Включен ли минт Abyss World
+
+pictographs_enable = 0  # Активны ли модули Pictographs
+pictographs_mint_switch = 1  # Включен ли минт nft Pictographs
+pictographs_stake_switch = 1  # БОНУСНОЕ | Включен ли стейкинг nft Pictographs
+
+omnisea_mint_switch = 0  # Включен ли минт Omnisea (Satoshi Universe)
+
 yooldo_enable = 0  # Активны ли модули yooldo
 daily_switch = 1  # Включен ли модуль Daily Stand-up
-trob_swap_switch = 1  # Включен ли модуль свапа USDC на TROB
+trob_swap_switch = 1  # БОНУСНОЕ | Включен ли модуль свапа USDC на TROB 
 usdc_limits = [0.01, 0.3]  # Количество USDC, которое свапаем на TROB. Если USDC нет на балансе, то сначала ETH на USDC на указанные значения.
 eth_volume_digs = [5, 6]  # Количество знаков после запятой для числа эфира, которое свапаем на USDC
 slippage_USDC = 0.020  # slippage для свапов эфира на USDC и обратно
 
-pictographs_enable = 0  # Активны ли модули Pictographs
-pictographs_mint_switch = 1  # Включен ли минт nft Pictographs
-pictographs_stake_switch = 1  # Включен ли стейкинг nft Pictographs
 
-abyss_world_mint_switch = 0  # Включен ли минт Abyss World
-
-omnisea_mint_switch = 0  # Включен ли минт Omnisea
 
 
 # ///// Параметры для квестов Week 3
 dmail_switch = 0  # Активен ли модуль Dmail
 
+gamic_switch = 0  # Активен ли модуль Gamic
+gamic_eth_value = [0.0000001, 0.000003]  # Количество эфира, посылаемое на адрес контракта
+gamic_eth_digs = 7  # Знаков после запятой для эфира
+
 as_match_mint_switch = 0  # Активен ли модуль AsMatch
+
+bit_avatar_switch = 1  # Активен ли модуль BitAvatar
 
 read_on_switch = 0  # Активен ли модуль ReadOn
 
 sending_me_switch = 0  # Активен ли модуль SendingMe
-sending_me_eth_value = [0.00000001, 0.00000002]  # Количество эфира, посылаемое на адрес контракта
+sending_me_eth_value = [0.00000001, 0.000003]  # Количество эфира, посылаемое на адрес контракта
 sending_me_eth_digs = 8  # Знаков после запятой для эфира
 
-gamic_switch = 0  # Активен ли модуль Gamic
-gamic_eth_value = [0.0000001, 0.0000002]  # Количество эфира, посылаемое на адрес контракта
-gamic_eth_digs = 7  # Знаков после запятой для эфира
-
-bit_avatar_switch = 1  # Активен ли модуль BitAvatar
 
 
 #       / Параметры старых модулей /
